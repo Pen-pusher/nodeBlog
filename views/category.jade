@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1=title
+  ul.errors
+    if errors
+      each error, i in errors
+        li.alert.alert-danger #{error.msg}
+  form(method="post", action="/category/add", enctype="multipart/form-data")
+    .form-group
+      label Title:
+      input(type="text",name="title", placeholder="Add Title")
+    button(type="submit") Submit 

@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  if posts
+  each post, i in posts
+    .post
+      a(href="/posts/show/#{post._id}")
+        h1=post.title
+      p.meta Posted in 
+        a(href="/category/show/#{post.category}") #{post.category} 
+        | by #{post.auther} on #{moment(post.date).format("DD-MM-YYYY")}
+      img(src="/images/uploads/#{post.mainimage}")
+      !=truncateText(post.body, 200)
+      a.more(href="/posts/show/#{post._id}") Show More
+
+  else  
+    p.noposts There are no Posts.
