@@ -10,6 +10,17 @@ router.get("/add", function(req, res, next) {
   });
 });
 
+router.get("/show/:category", function(req, res, next){
+  var db = req.db;
+  var posts = db.get("posts");
+  posts.find({category:req.params.category}, {}, function(err, posts){
+    res.render("index", {
+      "title": req.params.category,
+      "posts": posts
+    });
+  });
+});
+
 router.post("/add", function(req, res, next) {
   // Get Fields
   var title = req.body.title;
