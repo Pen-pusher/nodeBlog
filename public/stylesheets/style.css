@@ -119,3 +119,12 @@ label {
 .form-group {
   margin-bottom: 10px;
 }
+
+.comment {
+  background: #ccc;
+  border:1px solid #fff;
+  margin-bottom: 5px;
+}
+.comment-name, .comment-text {
+  padding-left: 5px;
+}

@@ -79,5 +79,58 @@ router.post("/add", function(req, res, next){
 
 });
 
+//Add Comment routes
+router.post("/addcomment", function(req, res, next){
+  var name = req.body.name;
+  var email = req.body.email;
+  var body = req.body.body;
+  var postid = req.body.postid;
+  var commentDate = new Date();
+
+  //Form Validation
+  req.checkBody("name", "Name Required").notEmpty();
+  req.checkBody("body", "Body Required").notEmpty();
+  req.checkBody("email", "Email Required").notEmpty();
+  req.checkBody("email", "Email not Valid").isEmail();
+
+  //Check Errors
+  var errors = req.validationErrors();
+
+  if (errors) {
+    var posts = db.get("posts");
+    posts.findById(postid, function(err, post) {
+      res.render("show", {
+        "errors": errors,
+        "post": post
+      });
+    });
+  } else {
+    var comments = {
+      "name": name,
+      "email": email,
+      "body": body,
+      "commentDate": commentDate
+    }
+    var posts = db.get("posts");
+    posts.update({
+      "_id": postid
+          }, 
+          {
+            $push: {
+        "comments": comments
+          }
+        }, function(err, doc) {
+      if(err) {
+        throw err;
+      } else {
+        req.flash("success", "Comment Added");
+        res.location("/posts/show/"+postid);
+        res.redirect("/posts/show/"+postid);
+      }
+    });
+  }
+
+});
+
 
 module.exports = router;

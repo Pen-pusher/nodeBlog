@@ -7,3 +7,29 @@ block content
         | by #{post.auther} on #{moment(post.date).format("DD-MM-YYYY")}
   img(src="/images/uploads/#{post.mainimage}")
   !=post.body
+  br
+  hr
+  if post.comments
+    h3 Comments
+    each comment, i in post.comments
+      .comment
+        p.comment-name #{comment.name}
+        p.comment-text #{comment.body}
+  br
+  h3 Add Comments
+  if errors
+    ul.errors
+      each error, i in errors
+        li.alert #{error.msg}
+  form.form-group(method="post", action="/posts/addcomment")
+    input(type="hidden", name="postid", value="#{post._id}")
+    .form-group
+      label Name
+      input.form-control(type="text", name="name",placeholder="Name")
+    .form-group
+      label Email
+      input.form-control(type="email", name="email",placeholder="Email")
+    .form-group
+      label Body
+      textarea.form-control(id="body", name="body",placeholder="Comment here..")
+    button.btn.btn-primary(type="submit") Add Comment
