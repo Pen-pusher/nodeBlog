@@ -13,6 +13,15 @@ router.get("/add", function(req, res, next){
   });
 });
 
+router.get("/show/:id", function(req, res, next){
+  var posts = db.get("posts");
+  posts.findById(req.params.id, function(err, post){
+    res.render("show", {
+      post: post
+    });
+  });
+});
+
 router.post("/add", function(req, res, next){
   //Get Field Values
   var title = req.body.title;
